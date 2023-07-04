@@ -4,14 +4,18 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import CssBaseline from "@mui/material/CssBaseline";
 import useScrollTrigger from "@mui/material/useScrollTrigger";
-import ProfileButton from "./LoginButton";
 import SpaIcon from "@mui/icons-material/Spa";
 import { Box } from "@mui/material";
+import { setUserInfoInSession, getUserInfoFromSession } from "../utils/SessionUtils";
+import { useState, MouseEvent } from "react";
+import { Button, Menu, MenuItem } from "@mui/material";
+import { Link } from "react-router-dom";
 
 interface Props {
   window?: () => Window;
   children: React.ReactElement;
 }
+
 function ElevationScroll(props: Props) {
   const { children, window } = props;
   const trigger = useScrollTrigger({
@@ -25,17 +29,70 @@ function ElevationScroll(props: Props) {
   });
 }
 
-export default function ResponsiveAppBar() {
+const ProfileButton: React.FC = () => {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const [username, setUsername] = React.useState("");
+
+  React.useEffect(() => {
+    // Check if user is already logged in
+    const userInfo = getUserInfoFromSession();
+    if (userInfo) {
+      setIsLoggedIn(true);
+      setUsername(userInfo.name);
+    }
+    console.log(userInfo);
+  }, []);
+
+  const handleMenuOpen = (event: MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
   const handleLogin = () => {
-    setIsLoggedIn(true); // Update the isLoggedIn state to true
+    setIsLoggedIn(true);
+    const userInfo = { name: "JohnDoe" }; // Replace with your login logic
+    setUsername(userInfo.name);
+    setUserInfoInSession(userInfo);
   };
 
   const handleLogout = () => {
-    setIsLoggedIn(false); // Update the isLoggedIn state to false
-    // Additional logout logic, such as clearing user data or tokens, can be added here
+    setIsLoggedIn(false);
+    setUsername("");
+    sessionStorage.removeItem("userInfo");
   };
 
+  return (
+    <>
+      {isLoggedIn ? (
+        <>
+          <Button onClick={handleMenuOpen}>{username}</Button>
+          <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleMenuClose}
+          >
+            <MenuItem component={Link} to="/myaccount" onClick={handleMenuClose}>
+              My Account
+            </MenuItem>
+            <MenuItem component={Link} to="/login" onClick={handleLogout}>
+              Logout
+            </MenuItem>
+          </Menu>
+        </>
+      ) : (
+        <Button component={Link} to="/login" onClick={handleLogin}>
+          Login
+        </Button>
+      )}
+    </>
+  );
+};
+
+export default function ResponsiveAppBar(props: Props) {
   return (
     <React.Fragment>
       <CssBaseline />
@@ -49,7 +106,7 @@ export default function ResponsiveAppBar() {
             }}
           >
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              <SpaIcon sx={{ mr: 1, color:'#000000' }} />
+              <SpaIcon sx={{ mr: 1, color: "#000000" }} />
               <Typography
                 variant="h5"
                 noWrap
@@ -67,16 +124,13 @@ export default function ResponsiveAppBar() {
               </Typography>
             </Box>
             <Box sx={{ flexGrow: 0 }}>
-              <ProfileButton
-                isLoggedIn={isLoggedIn}
-                onLogin={handleLogin}
-                onLogout={handleLogout}
-              />
+              <ProfileButton />
             </Box>
           </Toolbar>
         </AppBar>
       </ElevationScroll>
       <Toolbar />
+      <Box>{props.children}</Box>
     </React.Fragment>
   );
 }
