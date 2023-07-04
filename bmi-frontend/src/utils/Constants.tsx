@@ -37,3 +37,12 @@ export const TFStyle = {
       margin: 0,
     },
 };
+
+export interface BMIHistory {
+  id: number;
+  date: string;
+  height: number;
+  weight: number;
+  bmi: number;
+}
+

@@ -75,8 +75,15 @@ const ProfileButton: React.FC = () => {
             open={Boolean(anchorEl)}
             onClose={handleMenuClose}
           >
-            <MenuItem component={Link} to="/myaccount" onClick={handleMenuClose}>
+            <MenuItem
+              component={Link}
+              to="/myaccount"
+              onClick={handleMenuClose}
+            >
               My Account
+            </MenuItem>
+            <MenuItem component={Link} to="/" onClick={handleMenuClose}>
+              BMI Calculator
             </MenuItem>
             <MenuItem component={Link} to="/login" onClick={handleLogout}>
               Logout
@@ -111,7 +118,7 @@ export default function ResponsiveAppBar(props: Props) {
                 variant="h5"
                 noWrap
                 component="a"
-                href=""
+                href="/"
                 sx={{
                   fontFamily: "Geologica",
                   fontWeight: 700,
