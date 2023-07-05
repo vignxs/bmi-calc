@@ -4,7 +4,6 @@ import { Login } from "./components/Login";
 import { Register } from "./components/SignUp";
 import MyAccountPage from "./components/MyAccount";
 import { RequireAuth } from "react-auth-kit";
-import { AuthProvider } from "react-auth-kit";
 
 function App() {
   return (
