@@ -9,12 +9,6 @@ import { AuthProvider } from "react-auth-kit";
 function App() {
   return (
     <BrowserRouter>
-      <AuthProvider
-        authType="cookie"
-        authName="_auth"
-        cookieDomain={window.location.hostname}
-        cookieSecure={false}
-      >
         <Routes>
           <Route
             path="/"
@@ -35,7 +29,6 @@ function App() {
             }
           />
         </Routes>
-      </AuthProvider>
     </BrowserRouter>
   );
 }
