@@ -57,7 +57,7 @@ const getcategoryTextColor = (category: string) => {
     case "overweight":
       return "rgb(183, 110, 0)"; // Orange
     case "underweight":
-      return "rgb(13, 71, 161)"; // Blue
+      return "rgb(14, 112, 144)"; // Blue
     case "obese":
       return "rgb(183, 29, 24)"; // Red
     default:
@@ -72,7 +72,7 @@ const getcategoryBackgroundColor = (category: string) => {
     case "overweight":
       return "rgba(255, 171, 0, 0.16)"; // Orange
     case "underweight":
-      return "rgba(13, 71, 161, 0.16)"; // Blue
+      return "rgba(6, 174, 212, 0.12)"; // Blue
     case "obese":
       return "rgba(255, 86, 48, 0.16)"; // Red
     default:
