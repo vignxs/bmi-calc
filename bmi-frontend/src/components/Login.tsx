@@ -158,7 +158,7 @@ export const Login = () => {
           }}
         >
           Don't have an account?{" "}
-          <Link href="/signup" color="inherit">
+          <Link href="/register" color="inherit">
             Please sign up.
           </Link>
         </Typography>

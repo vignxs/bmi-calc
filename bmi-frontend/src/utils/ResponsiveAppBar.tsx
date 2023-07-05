@@ -88,7 +88,7 @@ const ProfileButton: React.FC = () => {
             <MenuItem component={Link} to="/" onClick={handleMenuClose}>
               BMI Calculator
             </MenuItem>
-            <MenuItem component={Link} to="/signup" onClick={handleLogout}>
+            <MenuItem component={Link} to="/register" onClick={handleLogout}>
               Signup
             </MenuItem>
             <MenuItem component={Link} to="/login" onClick={handleLogout}>

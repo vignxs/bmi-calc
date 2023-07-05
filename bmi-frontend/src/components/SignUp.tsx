@@ -13,7 +13,7 @@ import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
 import { setUserInfoInSession } from "../utils/SessionUtils";
 import { useSignIn } from "react-auth-kit";
 
-export const SignUp = () => {
+export const Register = () => {
   const history = useNavigate();
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");

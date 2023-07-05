@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import BMIHome from "./components/BMIHome";
 import { Login } from "./components/Login";
-import { SignUp } from "./components/SignUp";
+import { Register } from "./components/SignUp";
 import MyAccountPage from "./components/MyAccount";
 import { RequireAuth } from "react-auth-kit";
 import { AuthProvider } from "react-auth-kit";
@@ -25,7 +25,7 @@ function App() {
             }
           />
           <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
+          <Route path="/register" element={<Register />} />
           <Route
             path="/myaccount"
             element={
