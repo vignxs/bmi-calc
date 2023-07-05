@@ -1,6 +1,6 @@
 interface UserInfo {
+  id: number,
   name: string;
-  // Add other properties as needed
 }
 
 export const setUserInfoInSession = (userInfo: UserInfo) => {

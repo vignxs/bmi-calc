@@ -1,5 +1,7 @@
 import { GridColDef } from "@mui/x-data-grid";
 
+export const endpoint = "http://127.0.0.1:8000";
+
 export const TFStyle = {
   transition: "box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
   boxShadow:
@@ -48,8 +50,8 @@ export interface BMIHistory {
   bmi: number;
 }
 
-const getResultTextColor = (result: string) => {
-  switch (result) {
+const getcategoryTextColor = (category: string) => {
+  switch (category) {
     case "normal":
       return "rgb(17, 141, 87)"; // Green
     case "overweight":
@@ -63,8 +65,8 @@ const getResultTextColor = (result: string) => {
   }
 };
 
-const getResultBackgroundColor = (result: string) => {
-  switch (result) {
+const getcategoryBackgroundColor = (category: string) => {
+  switch (category) {
     case "normal":
       return "rgba(34, 197, 94, 0.16)"; // Green
     case "overweight":
@@ -129,7 +131,7 @@ export const columns: GridColDef[] = [
     width: 80,
   },
   {
-    field: "result",
+    field: "category",
     align: "center",
     renderCell: (params) => (
       <div
@@ -137,8 +139,8 @@ export const columns: GridColDef[] = [
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          color: getResultTextColor(params.value as string),
-          backgroundColor: getResultBackgroundColor(params.value as string),
+          color: getcategoryTextColor(params.value as string),
+          backgroundColor: getcategoryBackgroundColor(params.value as string),
           borderRadius: 6,
           padding: "8px",
           fontFamily:"Poppins",
@@ -151,7 +153,7 @@ export const columns: GridColDef[] = [
       </div>
     ),
     headerAlign: "center",
-    headerName: "Result",
+    headerName: "Category",
     width: 150,
   },
 ];

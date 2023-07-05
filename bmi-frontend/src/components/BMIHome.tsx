@@ -13,18 +13,22 @@ import {
   Paper,
 } from "@mui/material";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import { TFStyle } from "../utils/Constants";
+import { TFStyle, endpoint } from "../utils/Constants";
 import ResponsiveAppBar from "../utils/ResponsiveAppBar";
+import { getUserInfoFromSession } from "../utils/SessionUtils";
 
 function BMIHome() {
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
-  const [mobileNumber, setMobileNumber] = useState("");
+  const [mobile, setmobile] = useState("");
   const [gender, setGender] = useState("");
   const [bmi, setBMI] = useState<string>("00.00");
-  const [bmiImage, setbmiImage] = useState<string>("");
+  const [category , setCategory ] = useState<string>("empty");
+  const userInfo = getUserInfoFromSession();
+  let user: number | null = null;
+
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -42,8 +46,8 @@ function BMIHome() {
       case "weight":
         setWeight(value);
         break;
-      case "mobileNumber":
-        setMobileNumber(value);
+      case "mobile":
+        setmobile(value);
         break;
       case "gender":
         setGender(value);
@@ -63,33 +67,48 @@ function BMIHome() {
     setAge("");
     setHeight("");
     setWeight("");
-    setMobileNumber("");
+    setmobile("");
     setBMI("00.00");
-    setbmiImage("")
+    setCategory("empty")
   };
 
-  const handleSubmit = () => {
+
+  const handleSubmit = async() => {
     // Perform BMI calculation
-    const heightInMeters = Number(height) / 100; // Convert height from cm to meters
-    const weightInKg = Number(weight);
-    const bmiValue = (weightInKg / (heightInMeters * heightInMeters)).toFixed(
-      2
-    );
 
-    // Update BMI state
-    setBMI(bmiValue);
-    // Set image based on BMI result
-    const bmiNumber = Number(bmiValue);
-    if (bmiNumber < 18.5) {
-      setbmiImage("/underweight.jpg");
-    } else if (bmiNumber >= 18.5 && bmiNumber < 25) {
-      setbmiImage("/normal.jpg");
-    } else if (bmiNumber >= 25 && bmiNumber < 30) {
-      setbmiImage("/overweight.jpg");
-    } else {
-      setbmiImage("/obese.jpg");
-    }
-  };
+      if (userInfo) {
+        user = userInfo.id;
+      }
+      const data = {
+        user,
+        name,
+        gender,
+        height,
+        weight,
+        age,
+        mobile,
+        bmi,
+        category
+      };
+
+      const response = await fetch(endpoint  + "/bmi/api/bmi/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      console.log(response)
+
+      if (response.ok) {
+        const result = await response.json();
+        setBMI(result.bmi);
+        setCategory(result.category);
+        console.log("BMI record created:", result);
+      } else {
+        console.error("Failed to create BMI record");
+      }    
+    };
 
   return (
     <ResponsiveAppBar>
@@ -187,8 +206,8 @@ function BMIHome() {
               <TextValidator
                 label="Mobile Number"
                 onChange={handleInputChange}
-                name="mobileNumber"
-                value={mobileNumber}
+                name="mobile"
+                value={mobile}
                 type="number"
                 validators={["matchRegexp:^[6789]\\d{9}$"]}
                 errorMessages={["Please enter 10 digit mobile number"]}
@@ -306,7 +325,7 @@ function BMIHome() {
               width: "230px",
             }}
           >
-            {bmiImage ? (
+            {category === "empty" ? (
               <>
                 {loading && (
                   <div
@@ -320,29 +339,29 @@ function BMIHome() {
                     <CircularProgress />
                   </div>
                 )}
-                <img
-                  src={bmiImage}
-                  alt="BMI Category"
+                <div
                   style={{
-                    display: loading ? "none" : "block",
-                    maxWidth: "100%",
-                    maxHeight: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: "100%",
                   }}
-                  onLoad={handleImageLoaded}
-                  onError={handleImageLoaded}
-                />
+                >
+                  <CircularProgress />
+                </div>
               </>
             ) : (
-              <div
+              <img
+                src={"/" + category+ ".jpg"}
+                alt={"/" + category+ ".jpg"}
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  height: "100%",
+                  display: loading ? "none" : "block",
+                  maxWidth: "100%",
+                  maxHeight: "100%",
                 }}
-              >
-                <CircularProgress />
-              </div>
+                onLoad={handleImageLoaded}
+                onError={handleImageLoaded}
+              />
             )}
           </Paper>
         </div>

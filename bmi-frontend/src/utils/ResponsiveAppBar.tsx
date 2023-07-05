@@ -10,6 +10,7 @@ import { setUserInfoInSession, getUserInfoFromSession } from "../utils/SessionUt
 import { useState, MouseEvent } from "react";
 import { Button, Menu, MenuItem } from "@mui/material";
 import { Link } from "react-router-dom";
+import { useSignOut } from "react-auth-kit";
 
 interface Props {
   window?: () => Window;
@@ -51,19 +52,21 @@ const ProfileButton: React.FC = () => {
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
-
+  const signOut = useSignOut();
   const handleLogin = () => {
     setIsLoggedIn(true);
-    const userInfo = { name: "JohnDoe" }; // Replace with your login logic
+    const userInfo = { id: 1, name: "JohnDoe" };
     setUsername(userInfo.name);
     setUserInfoInSession(userInfo);
   };
-
+  
   const handleLogout = () => {
+    signOut()
     setIsLoggedIn(false);
     setUsername("");
     sessionStorage.removeItem("userInfo");
   };
+
 
   return (
     <>
@@ -84,6 +87,9 @@ const ProfileButton: React.FC = () => {
             </MenuItem>
             <MenuItem component={Link} to="/" onClick={handleMenuClose}>
               BMI Calculator
+            </MenuItem>
+            <MenuItem component={Link} to="/signup" onClick={handleLogout}>
+              Signup
             </MenuItem>
             <MenuItem component={Link} to="/login" onClick={handleLogout}>
               Logout

@@ -1,60 +1,39 @@
+import { useEffect, useState } from "react";
 import { Typography, Container, TextField, Box } from "@mui/material";
 import { getUserInfoFromSession } from "../utils/SessionUtils";
-import { TFStyle, columns } from "../utils/Constants";
+import { TFStyle, columns, endpoint } from "../utils/Constants";
 import ResponsiveAppBar from "../utils/ResponsiveAppBar";
 import { DataGrid } from "@mui/x-data-grid";
 
 const MyAccountPage = () => {
-  // Retrieve user information from session
+  const [bmiHistory, setBmiHistory] = useState([]);
   const userInfo = getUserInfoFromSession();
-  const  mobile  = 1111111;
-  const bmiHistory = [
-    {
-      id: 1,
-      name: "akash",
-      mobile: "111111111",
-      age: 30,
-      height: 170,
-      weight: 70,
-      bmi: 24.2,
-      result: "normal",
-    },
-    {
-      id: 2,
-      name: "vignesh",
-      mobile: "222222222",
-      age: 35,
-      height: 165,
-      weight: 75,
-      bmi: 27.5,
-      result: "obese",
-    },
-    {
-      id: 3,
-      name: "dinesh",
-      mobile: "333333333",
-      age: 28,
-      height: 180,
-      weight: 85,
-      bmi: 26.2,
-      result: "underweight",
-    },
-    {
-      id: 4,
-      name: "dhanush",
-      mobile: "333333333",
-      age: 28,
-      height: 180,
-      weight: 85,
-      bmi: 26.2,
-      result: "overweight",
-    },
-    // Add more sample data as needed
-  ];
+  const [email, setEmail] = useState("");
 
 
+  useEffect(() => {
+    // Function to fetch BMI records for the user
+    const fetchBMIRecords = async (userId: number) => {
+      try {
+        const response = await fetch(endpoint + `/bmi/api/bmi/?user_id=${userId}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch BMI records");
+        }
+        const bmiRecords = await response.json();
+        setBmiHistory(bmiRecords.bmi_records);
+        setEmail(bmiRecords.email)
+        console.log(bmiRecords);
+      } catch (error) {
+        console.error("Error fetching BMI records:", error);
+      }
+    };
 
- 
+    // Fetch BMI records for the user
+    const userId = userInfo?.id; // Replace with the actual user ID
+    if (userId) {
+      fetchBMIRecords(userId);
+    }
+  }, []);
 
   return (
     <ResponsiveAppBar>
@@ -83,9 +62,9 @@ const MyAccountPage = () => {
             required
           />
           <TextField
-            label="Mobile"
-            name="mobile"
-            value={mobile}
+            label="Email"
+            name="email"
+            value={email}
             fullWidth
             required
           />
@@ -125,4 +104,4 @@ const MyAccountPage = () => {
   );
 };
 
-export default MyAccountPage ;
+export default MyAccountPage;
