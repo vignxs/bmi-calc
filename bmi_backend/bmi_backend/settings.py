@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-7iw#q($_&s06r&uatkk2o2kju2rh53m7faagu4ncdr2qs7s83l
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -56,7 +56,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173',  # Add the URL of your frontend application
+    'http://localhost:5173', 'https://bmi-calc-vignxs.vercel.app', # Add the URL of your frontend application
 ]
 
 ROOT_URLCONF = 'bmi_backend.urls'
