@@ -11,10 +11,10 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 from datetime import timedelta
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -185,3 +186,52 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'bmi.User'
+
+#for admin panel customization
+JAZZMIN_SETTINGS = {
+    'site_title': 'BMI Admin Panel',
+    'site_header': 'BMI Admin Panel',
+    'welcome_sign': 'Welcome to the BMI Admin Panel',
+    'show_sidebar': True,
+    "search_model": ["bmi.User"],
+    'navigation_expanded': False,
+    'hide_apps': ['auth', 'sessions', 'admin', 'contenttypes'],
+    'icons': {
+        'auth': 'mdi mdi-account-box',
+        'myapp': 'mdi mdi-heart-pulse',
+    },
+    'default_icon_parents': 'mdi mdi-folder-outline',
+    'default_icon_children': 'mdi mdi-chevron-right',
+    'related_modal_active': False,
+    "topmenu_links": [
+
+        # Url that gets reversed (Permissions can be added)
+        {"name": "Home",  "url": "admin:index", "permissions": ["auth.view_user"]},
+
+        # model admin to link to (Permissions checked against model)
+        {"model": "bmi.User"},
+
+        # App with dropdown menu to all its models pages (Permissions checked against models)
+        {"app": "bmi"},
+    ],
+    
+    #############
+    # Side Menu #
+    #############
+
+    # Whether to display the side menu
+    "show_sidebar": True,
+
+    # Whether to aut expand the menu
+    "navigation_expanded": True,
+
+    # Hide these apps when generating side menu e.g (auth)
+    "hide_apps": [],
+
+    # Hide these models when generating side menu (e.g auth.user)
+    "hide_models": [],
+
+    # List of apps (and/or models) to base side menu ordering off of (does not need to contain all apps/models)
+    "order_with_respect_to": ["bmi"],
+       
+}

@@ -6,7 +6,7 @@ import {
   Link,
 } from "@mui/material";
 import React from "react";
-import {useNavigate}   from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { TFStyle, endpoint } from "../utils/Constants";
 import SpaIcon from "@mui/icons-material/Spa";
 import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
@@ -15,25 +15,21 @@ import { useSignIn } from "react-auth-kit";
 
 export const Login = () => {
   const history = useNavigate();
-  const [email, setEmail] = React.useState("");
-  const [username, setUserName] = React.useState("")
+  const [username, setUserName] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [error, setError] = React.useState("");
   const signIn = useSignIn();
 
-
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    if (name === "email") {
-      setEmail(value);
-    } else if (name === "username") {
+    if (name === "username") {
       setUserName(value);
     } else if (name === "password") {
       setPassword(value);
     }
   };
 
-  const handleSubmit = async() => {
+  const handleSubmit = async () => {
     // Handle form submission
     const response = await fetch(endpoint + "/bmi/api/login/", {
       method: "POST",
@@ -52,16 +48,15 @@ export const Login = () => {
         expiresIn: 3600,
         tokenType: "Bearer",
         authState: { user: resp.name },
-      }); 
+      });
       setUserInfoInSession(resp);
-      console.log(resp)
+      console.log(resp);
       history("/");
     } else {
       const errorResponse = await response.json();
-      setError(errorResponse.error      );
-      console.log(errorResponse)
+      setError(errorResponse.error);
+      console.log(errorResponse);
     }
-    
   };
 
   return (
