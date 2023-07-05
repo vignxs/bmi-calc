@@ -339,16 +339,6 @@ function BMIHome() {
                     <CircularProgress />
                   </div>
                 )}
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    height: "100%",
-                  }}
-                >
-                  <CircularProgress />
-                </div>
               </>
             ) : (
               <img
