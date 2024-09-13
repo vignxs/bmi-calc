@@ -1,0 +1,25 @@
+{
+
+    "builds": [{
+
+        "src": "bmi_backend/wsgi.py",
+
+        "use": "@vercel/python",
+
+        "config": { "maxLambdaSize": "100mb", "runtime": "python3.10" }
+
+    }],
+
+    "routes": [
+
+        {
+
+            "src": "/(.*)",
+
+            "dest": "bmi_backend/wsgi.py"
+
+        }
+
+    ]
+
+}

@@ -12,6 +12,7 @@ import { Button, Menu, MenuItem } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useSignOut } from "react-auth-kit";
 
+
 interface Props {
   window?: () => Window;
   children: React.ReactElement;
@@ -97,7 +98,7 @@ const ProfileButton: React.FC = () => {
           </Menu>
         </>
       ) : (
-        <Button component={Link} to="/login" onClick={handleLogin}>
+        <Button component={Link} to="/signin" onClick={handleLogin}>
           Login
         </Button>
       )}
